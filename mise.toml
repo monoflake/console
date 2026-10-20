@@ -365,6 +365,18 @@ description = "Delete the published assets that `gc` listed"
 # true, which is a fact about this repository rather than a guarantee of the command.
 run = "cargo run -q -p local -- gc --live"
 
+# The workspace's change engine over what workspace.toml declares: the gates a change reaches, and
+# the Workers it needs packaged, as JSON.
+[tasks.verify]
+description = "Every gate a change reaches: `verify [--all] [--since REV] [--dry-run] [--files ...]`"
+depends = ["//:build"]
+run = "node {{env.WORKSPACE}}/scripts/change/verify.res.mjs"
+
+[tasks.deployable]
+description = "The Workers a change needs packaged for the deployer, as JSON: `deployable [--all] [--since REV | --git BASE] [--files ...]`"
+depends = ["//:build"]
+run = "node {{env.WORKSPACE}}/scripts/change/deployable.res.mjs"
+
 # Gates every repository runs the same, from the workspace's scripts/; what is
 # this repository's own is the arguments each is given. RFC 17b3o.
 [tasks.secrets]

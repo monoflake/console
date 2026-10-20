@@ -1,0 +1,48 @@
+# What this repository declares to the workspace above it, read by its shared scripts: the
+# workspace's scripts/change/project.res says what each key means.
+
+# `apps/` holds what is deployed, `libs/` what is imported, `apps/space/*` canmi.app's parts.
+[layout]
+packages = ["apps/*", "apps/space/*", "libs/*"]
+apps = ["apps"]
+
+[verify]
+# `polish` reads the RFCs beside this repository, `check-contracts` the producers' schemas, both
+# changing without touching it.
+always = ["secrets", "refs", "comments", "polish", "check-contracts"]
+# tsc reads three programs, vitest one suite, oxlint the tree.
+node = ["check", "lint", "test"]
+rust = ["lint-rust", "test-rust"]
+
+[verify.packages]
+"@canmi/site" = [
+	"check-site",
+	"check-css",
+	"check-css-budget",
+	"check-worker",
+	"check-css-extraction",
+	"check-css-enumeration",
+	"check-css-ramp",
+]
+"@canmi/cms" = ["check-cms"]
+"@canmi/prose" = ["check-prose"]
+"@canmi/social" = ["check-social"]
+"@canmi/fonts" = ["check-fonts"]
+"@canmi/status" = ["check-status"]
+"@canmi/landing" = ["check-landing"]
+"@canmi/console" = ["check-console"]
+"@canmi/space" = ["check-space"]
+"@canmi/space-design" = ["check-space-design"]
+"@canmi/space-rfcs" = ["check-space-rfcs"]
+"@canmi/space-ui" = ["check-space-ui"]
+
+# Read by the site's build and the corpus tests rather than imported, so no graph reaches them.
+[[verify.reaches]]
+under = ["contents/", "data/"]
+packages = ["@canmi/site"]
+
+# The Workers the deployer deploys, one at a time; the site stays on Cloudflare's Git integration
+# until its D1 moves to Postgres. It builds no image.
+[deployable]
+images = false
+workers = ["console"]
