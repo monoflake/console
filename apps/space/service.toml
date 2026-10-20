@@ -1,6 +1,0 @@
-# canmi.app, the router in front of space's parts, each an app of its own. See
-# spec/architecture/space.md.
-version = 1
-name = "space"
-display_name = "Space"
-placements = ["workers"]

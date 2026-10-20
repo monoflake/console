@@ -1,3 +1,0 @@
-/* Space's own stylesheet first, then this part's files for Tailwind to read. */
-@import '@canmi/space-ui/app.css';
-@source '.';
